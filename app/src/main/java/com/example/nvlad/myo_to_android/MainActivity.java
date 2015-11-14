@@ -38,11 +38,15 @@ public class MainActivity extends AppCompatActivity
             return;
         }
 
-        Hub.getInstance().addListener(mListener);
+       // Hub.getInstance().addListener(mListener);
 
         Intent intent = new Intent(context, ScanActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+
+        hub.setLockingPolicy(Hub.LockingPolicy.NONE);
+        hub.addListener(mListener);
+        hub.attachToAdjacentMyo();
 
 
     }
@@ -75,18 +79,19 @@ public class MainActivity extends AppCompatActivity
                     mTextView.setText("Hello");
                     break;
                 case REST:
-                case DOUBLE_TAP:
-                    //int restTextId = R.string.hello_world;
-                    switch (myo.getArm()) {
-                        case LEFT:
-                            //restTextId = R.string.arm_left;
-                            break;
-                        case RIGHT:
-                            //restTextId = R.string.arm_right;
-                            break;
-                    }
-                    //mTextView.setText(getString(restTextId));
-                    break;
+//                case DOUBLE_TAP:
+//                    //int restTextId = R.string.hello_world;
+//                    switch (myo.getArm()) {
+//                        case LEFT:
+//                            //restTextId = R.string.arm_left;
+//                            break;
+//                        case RIGHT:
+//                            //restTextId = R.string.arm_right;
+//                            break;
+//
+//                    }
+//                    //mTextView.setText(getString(restTextId));
+//                    break;
 
                 case FIST:
                     //mTextView.setText("Start");
@@ -110,6 +115,12 @@ public class MainActivity extends AppCompatActivity
                    // mTextView.setText("Forward");
                     Toast.makeText(context, "Forward", Toast.LENGTH_SHORT).show();
                     Stop("http://192.168.240.1/arduino/digital/13/0");
+                    break;
+
+                case DOUBLE_TAP:
+                    // mTextView.setText("Reverse");
+                    Toast.makeText(context, "Reverse", Toast.LENGTH_SHORT).show();
+                    Stop("http://192.168.240.1/arduino/digital/13/51");
                     break;
             }
             if (pose != Pose.UNKNOWN && pose != Pose.REST) {
